@@ -26,7 +26,7 @@
             </td>
         </tr>
     </table>
-    
+    </div>
     <form>
       <input type="hidden" name="id" id="id" /><br />
       Name:<br />
@@ -38,5 +38,57 @@
       <input type="submit" value="Save message">
       <input type="reset" value="Cancel">
     </form>
-</div>
+
+    <script type="text/javascript">
+    console.log('Hello from javascript!')
+
+
+    function reqListener () {
+
+  console.log(this.responseText);
+
+  let data = JSON.parse(this.responseText)
+  console.log(data)
+
+  let htmlContent = `
+  <table style="width:100%;">
+        <tr>
+            <th>ID</th>
+            <th>Subject</th>
+            <th>Name</th> 
+            <th>Message</th>
+            <th>Actions</th>
+        </tr>
+  `
+
+data.forEach((el) =>
+{
+    htmlContent +=`
+    <tr>
+            <td>${el.id}</td>
+            <td>${el.subject}</td>
+            <td>${el.name}</td>
+            <td>${el.message}</td>
+            <td>
+                <button>Edit</button>
+                <button>Delete</button>
+            </td>
+        </tr>
+    `
+
+})
+htmlContent+=`</table>`
+
+document.getElementById('content').innerHTML = htmlContent
+  
+}
+
+var oReq = new XMLHttpRequest();
+oReq.addEventListener("load", reqListener);
+oReq.open("GET", "/messages");
+oReq.send();
+
+
+</script>
+
 </html>
